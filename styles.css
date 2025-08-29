@@ -54,6 +54,10 @@ header button:active {
   background-color: #0d2c46; 
 }
 
+.pressed{
+  background-color: #0d2c46;  
+}
+
 /**************************************************INPUT***********************************************************/
 
 input[type="text"] {

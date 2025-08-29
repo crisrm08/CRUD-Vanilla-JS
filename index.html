@@ -8,260 +8,27 @@
     </head>
     <body>
         <header>
-            <button id="courses-button">Cursos</button>
-            <button id="students-button">Estudiantes</button>
-            <button id="class-button">Matrículas</button>
+            <button id="courses-button" class="">Cursos</button>
+            <button id="students-button" class="">Estudiantes</button>
+            <button id="class-button" class="">Matrículas</button>
         </header>
 
-        <input type="text" placeholder="buscar...">
+        <input type="text" id="search" placeholder="Buscar...">
 
         <section class="toolbar">
             <div class="toolbar__actions">
                 <button class="btn btn--primary" 
-                        type="button" 
-                        data-modal-open="card-modal" 
-                        data-modal-mode="create">
-                + Crear tarjeta
+                    type="button" 
+                    data-modal-open="card-modal" 
+                    data-modal-mode="create">
+                    + Crear tarjeta
                 </button>
             </div>
         </section>
                
         <div class="objects-card-grid">
-            <article class="card">
-                <div class="card__header">
-                    <h3 class="card__title">Programación 101</h3>
-                    <span class="badge">Curso</span>
-                </div>
-                <p class="card__desc">
-                    Introducción a fundamentos: variables, funciones, estructuras de control y buenas prácticas.
-                 </p>
-                <footer class="card__footer">
-                <div class="meta">
-                    <span class="meta__item">30 h</span>
-                    <span class="meta__item">10 alumnos</span>
-                </div>
-                <button class="card__btn" type="button">Editar</button>
-                 <button class="card__btn" type="button">Borar</button>
-                </footer>
-            </article>
-
-            <article class="card">
-                <div class="card__header">
-                <h3 class="card__title">Estructuras de datos</h3>
-                <span class="badge">Curso</span>
-                </div>
-                <p class="card__desc">
-                    Arreglos, pilas, colas y mapas aplicados a problemas reales de rendimiento.
-                </p>
-                <footer class="card__footer">
-                <div class="meta">
-                    <span class="meta__item">24 h</span>
-                    <span class="meta__item">8 alumnos</span>
-                </div>
-                <button class="card__btn" type="button">Editar</button>
-                <button class="card__btn" type="button">Borar</button>
-                </footer>
-            </article>
-
-            <article class="card">
-                <div class="card__header">
-                    <h3 class="card__title">Ana Pérez</h3>
-                    <span class="badge">Estudiante</span>
-                </div>
-                <p class="card__desc">
-                    Email: ana@uni.edu<br>
-                    Tel: 809-000-0000
-                </p>
-                <footer class="card__footer">
-                    <div class="meta">
-                        <span class="meta__item">ID: s_k92</span>
-                    </div>
-                    <button class="card__btn" type="button">Editar</button>
-                    <button class="card__btn" type="button">Borar</button>
-                </footer>
-            </article>
-
-            <article class="card">
-                <div class="card__header">
-                    <h3 class="card__title">Luis Gómez</h3>
-                    <span class="badge">Estudiante</span>
-                </div>
-                <p class="card__desc">
-                    Email: luis@uni.edu<br>
-                    Tel: 809-111-1111
-                </p>
-                <footer class="card__footer">
-                    <div class="meta">
-                        <span class="meta__item">ID: s_m13</span>
-                    </div>
-                    <button class="card__btn" type="button">Editar</button>
-                    <button class="card__btn" type="button">Borar</button>
-                </footer>
-            </article>
-
-            <article class="card">
-                <div class="card__header">
-                    <h3 class="card__title">Matrícula e_1a2</h3>
-                    <span class="badge">Matrícula</span>
-                </div>
-                <p class="card__desc">
-                    Estudiante: s_k92<br>
-                    Curso: c_x7a
-                </p>
-                <footer class="card__footer">
-                    <div class="meta">
-                        <span class="meta__item">Estado: activo</span>
-                    </div>
-                    <button class="card__btn" type="button">Editar</button>
-                    <button class="card__btn" type="button">Borar</button>
-                </footer>
-            </article>
-
-            <article class="card">
-                <div class="card__header">
-                    <h3 class="card__title">Matrícula e_3b4</h3>
-                    <span class="badge">Matrícula</span>
-                </div>
-                <p class="card__desc">
-                    Estudiante: s_m13<br>
-                    Curso: c_z9q
-                </p>
-                <footer class="card__footer">
-                    <div class="meta">
-                        <span class="meta__item">Estado: pendiente</span>
-                    </div>
-                    <button class="card__btn" type="button">Editar</button>
-                    <button class="card__btn" type="button">Borar</button>
-                </footer>
-            </article>
+            
         </div>
-
-        <!-- ===== Modal: CURSO ===== -->
-        <div class="modal" id="modal-course" aria-hidden="true" role="dialog" aria-modal="true">
-            <div class="modal__overlay" data-close></div>
-            <div class="modal__dialog" role="document">
-                <header class="modal__header">
-                    <h3 class="modal__title">Nuevo curso</h3>
-                    <button class="modal__close" type="button" aria-label="Cerrar" data-close>&times;</button>
-                </header>
-                <div class="modal__body">
-                    <div class="field">
-                        <label class="label" for="course-id">ID del curso</label>
-                        <input class="input" id="course-id" type="text" placeholder="c_x7a">
-                    </div>
-                    <div class="field">
-                        <label class="label" for="course-title">Título</label>
-                        <input class="input" id="course-title" type="text" placeholder="Programación 101">
-                    </div>
-                    <div class="row">
-                        <div class="field">
-                        <label class="label" for="course-hours">Horas</label>
-                        <input class="input" id="course-hours" type="number" placeholder="30">
-                        </div>
-                        <div class="field">
-                        <label class="label" for="course-capacity">Cupo</label>
-                        <input class="input" id="course-capacity" type="number" placeholder="25">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="course-desc">Descripción</label>
-                        <textarea class="textarea" id="course-desc" placeholder="Breve descripción del curso..."></textarea>
-                    </div>
-                </div>
-                <footer class="modal__footer">
-                <button class="btn" type="button" data-close>Cancelar</button>
-                <button class="btn btn--primary" type="button" data-submit="course">Guardar</button>
-                </footer>
-            </div>
-        </div>
-
-        <!-- ===== Modal: ESTUDIANTE ===== -->
-        <div class="modal" id="modal-student" aria-hidden="true" role="dialog" aria-modal="true">
-            <div class="modal__overlay" data-close></div>
-            <div class="modal__dialog" role="document">
-                <header class="modal__header">
-                    <h3 class="modal__title">Nuevo estudiante</h3>
-                    <button class="modal__close" type="button" aria-label="Cerrar" data-close>&times;</button>
-                </header>
-                <div class="modal__body">
-                    <div class="row">
-                        <div class="field">
-                        <label class="label" for="st-id">ID</label>
-                        <input class="input" id="st-id" type="text" placeholder="s_k92">
-                        </div>
-                        <div class="field">
-                        <label class="label" for="st-name">Nombre</label>
-                        <input class="input" id="st-name" type="text" placeholder="Ana Pérez">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="field">
-                        <label class="label" for="st-email">Email</label>
-                        <input class="input" id="st-email" type="email" placeholder="ana@uni.edu">
-                        </div>
-                        <div class="field">
-                        <label class="label" for="st-phone">Teléfono</label>
-                        <input class="input" id="st-phone" type="tel" placeholder="809-000-0000">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <span class="legend">Notas (opcional)</span>
-                        <div class="hr"></div>
-                        <textarea class="textarea" id="st-notes" placeholder="Observaciones, prerequisitos, etc."></textarea>
-                    </div>
-                </div>
-                <footer class="modal__footer">
-                    <button class="btn" type="button" data-close>Cancelar</button>
-                    <button class="btn btn--primary" type="button" data-submit="student">Guardar</button>
-                </footer>
-            </div>
-        </div>
-
-        <!-- ===== Modal: MATRÍCULA ===== -->
-        <div class="modal" id="modal-enrollment" aria-hidden="true" role="dialog" aria-modal="true">
-            <div class="modal__overlay" data-close></div>
-            <div class="modal__dialog" role="document">
-                <header class="modal__header">
-                    <h3 class="modal__title">Nueva matrícula</h3>
-                    <button class="modal__close" type="button" aria-label="Cerrar" data-close>&times;</button>
-                </header>
-                <div class="modal__body">
-                    <div class="row">
-                        <div class="field">
-                            <label class="label" for="enr-id">ID matrícula</label>
-                            <input class="input" id="enr-id" type="text" placeholder="e_1a2">
-                        </div>
-                        <div class="field">
-                        <label class="label" for="enr-status">Estado</label>
-                        <select class="select" id="enr-status">
-                            <option value="activo">activo</option>
-                            <option value="pendiente">pendiente</option>
-                            <option value="inactivo">inactivo</option>
-                        </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="field">
-                            <label class="label" for="enr-student">ID estudiante</label>
-                            <input class="input" id="enr-student" type="text" placeholder="s_k92">
-                        </div>
-                        <div class="field">
-                            <label class="label" for="enr-course">ID curso</label>
-                            <input class="input" id="enr-course" type="text" placeholder="c_x7a">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <span class="legend">Comentario (opcional)</span>
-                        <div class="hr"></div>
-                        <textarea class="textarea" id="enr-notes" placeholder="Motivo de estado, referencias, etc."></textarea>
-                    </div>
-                </div>
-                <footer class="modal__footer">
-                    <button class="btn" type="button" data-close>Cancelar</button>
-                    <button class="btn btn--primary" type="button" data-submit="enrollment">Guardar</button>
-                </footer>
-            </div>
-        </div>
-      
+    <script src="/js/index.js"></script>
     </body>
 </html>
