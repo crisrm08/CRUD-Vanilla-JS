@@ -25,6 +25,27 @@ function classButtonClicked() {
         </footer>
     </article>`;
     
+    if (document.getElementById('add-course-button')) document.getElementById('add-course-button').remove();
+    if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
+    if (!document.getElementById('add-class-button')){
+        const bodyElement = document.body;
+        const addCourseButton = document.createElement('div');
+        addCourseButton.innerHTML =  `
+            <section class="toolbar" id="add-class-button">
+                <div class="toolbar__actions">
+                    <button class="btn add-btn" 
+                        type="button" 
+                        data-modal-open="card-modal" 
+                        data-modal-mode="create">
+                        + Crear nueva clase
+                    </button>
+                </div>
+            </section>
+        `;
+        const referenceElement = document.querySelector('.objects-card-grid');
+        bodyElement.insertBefore(addCourseButton, referenceElement);
+    }
+
     objectsToRender.innerHTML = '';
     objectsToRender.innerHTML = htmlToRender;
     studentsButton.classList.remove('pressed');

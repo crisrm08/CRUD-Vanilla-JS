@@ -1,5 +1,6 @@
 import { objectsToRender, inputSearch, coursesButton, studentsButton, classButton} from "./common.js";
 
+
 let htmlToRender = '';
 coursesButton.addEventListener('click', coursesButtonClicked);
 
@@ -23,13 +24,34 @@ function coursesButtonClicked() {
         </div>
         </footer>
     </article>`;
+
+    if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
+    if (document.getElementById('add-class-button')) document.getElementById('add-class-button').remove();
+    if (!document.getElementById('add-course-button')) {
+        const bodyElement = document.body;
+        const addCourseButton = document.createElement('div');
+        addCourseButton.innerHTML =  `
+        <section class="toolbar" id="add-course-button">
+                <div class="toolbar__actions">
+                    <button class="btn add-btn" 
+                        type="button" 
+                        data-modal-open="card-modal" 
+                        data-modal-mode="create">
+                        + Crear nuevo curso
+                    </button>
+                </div>
+            </section>
+            `;
+        const referenceElement = document.querySelector('.objects-card-grid');
+        bodyElement.insertBefore(addCourseButton, referenceElement);
+    }
+
     objectsToRender.innerHTML = '';
     objectsToRender.innerHTML = htmlToRender;
     studentsButton.classList.remove('pressed');
     classButton.classList.remove('pressed');
     coursesButton.classList.add('pressed');
     inputSearch.placeholder = 'Buscar curso...';
-        
 }
 
 coursesButtonClicked();
