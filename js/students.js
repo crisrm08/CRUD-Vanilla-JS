@@ -1,0 +1,33 @@
+import { objectsToRender, inputSearch, studentsButton, coursesButton, classButton} from "./common.js";
+
+let htmlToRender = '';
+studentsButton.addEventListener('click', studentsButtonClicked);
+
+function studentsButtonClicked() {
+    htmlToRender = '';
+    htmlToRender = `   <article class="card">
+        <div class="card__header">
+            <h3 class="card__title">Ana Pérez</h3>
+            <span class="badge">Estudiante</span>
+        </div>
+        <p class="card__desc">
+            Email: ana@uni.edu<br>
+            Tel: 809-000-0000
+        </p>
+        <footer class="card__footer">
+            <div class="meta">
+                <span class="meta__item">ID: s_k92</span>
+            </div>
+            <div>
+                <button class="card__btn" type="button">Editar</button>
+                <button class="card__btn" type="button">Borrar</button>
+            </div>
+        </footer>
+    </article>`;
+    objectsToRender.innerHTML = '';
+    objectsToRender.innerHTML = htmlToRender;
+    studentsButton.classList.add('pressed');
+    classButton.classList.remove('pressed');
+    coursesButton.classList.remove('pressed');
+    inputSearch.placeholder = 'Buscar estudiante...';
+}
