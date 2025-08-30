@@ -3,9 +3,14 @@ import { objectsToRender, inputSearch, coursesButton, studentsButton, classButto
 
 let htmlToRender = '';
 coursesButton.addEventListener('click', coursesButtonClicked);
+ 
+document.querySelector('.cancel-edit-save').addEventListener('click', () => {
+    document.getElementById('modal-course').classList.remove('is-open');
+})
 
 function coursesButtonClicked() {
-    htmlToRender = `<article class="card">
+    htmlToRender = `
+    <article class="card">
         <div class="card__header">
             <h3 class="card__title">Programación 101</h3>
             <span class="badge">Curso</span>
@@ -33,7 +38,7 @@ function coursesButtonClicked() {
         addCourseButton.innerHTML =  `
         <section class="toolbar" id="add-course-button">
                 <div class="toolbar__actions">
-                    <button class="btn add-btn" 
+                    <button class="btn add-course-button" 
                         type="button" 
                         data-modal-open="card-modal" 
                         data-modal-mode="create">
@@ -44,6 +49,10 @@ function coursesButtonClicked() {
             `;
         const referenceElement = document.querySelector('.objects-card-grid');
         bodyElement.insertBefore(addCourseButton, referenceElement);
+
+        const addButton = document.querySelector('.add-course-button');
+        addButton.addEventListener('click', handleNewCourse);
+
     }
 
     objectsToRender.innerHTML = '';
@@ -55,3 +64,7 @@ function coursesButtonClicked() {
 }
 
 coursesButtonClicked();
+
+function handleNewCourse() { 
+    document.getElementById('modal-course').classList.add('is-open');
+}

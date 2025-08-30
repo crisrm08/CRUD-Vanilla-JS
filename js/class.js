@@ -3,10 +3,15 @@ import { objectsToRender, inputSearch, classButton, coursesButton, studentsButto
 let htmlToRender = '';
 classButton.addEventListener('click', classButtonClicked);
 
+document.querySelector('.cancel-edit-save-3').addEventListener('click', () => {
+    document.getElementById('modal-enrollment').classList.remove('is-open');
+})
+
 function classButtonClicked() {
     htmlToRender = '';
-    htmlToRender = ` <article class="card">
-        <div class="card__header">s
+    htmlToRender = `
+    <article class="card">
+        <div class="card__header">
             <h3 class="card__title">Matrícula e_1a2</h3>
             <span class="badge">Matrícula</span>
         </div>
@@ -33,7 +38,7 @@ function classButtonClicked() {
         addCourseButton.innerHTML =  `
             <section class="toolbar" id="add-class-button">
                 <div class="toolbar__actions">
-                    <button class="btn add-btn" 
+                    <button class="btn add-class-button" 
                         type="button" 
                         data-modal-open="card-modal" 
                         data-modal-mode="create">
@@ -44,6 +49,9 @@ function classButtonClicked() {
         `;
         const referenceElement = document.querySelector('.objects-card-grid');
         bodyElement.insertBefore(addCourseButton, referenceElement);
+
+        const addButton = document.querySelector('.add-class-button');
+        addButton.addEventListener('click', handleNewClass);
     }
 
     objectsToRender.innerHTML = '';
@@ -52,4 +60,8 @@ function classButtonClicked() {
     classButton.classList.add('pressed');
     coursesButton.classList.remove('pressed');
     inputSearch.placeholder = 'Buscar matrícula...';
+}
+
+function handleNewClass() { 
+    document.getElementById('modal-enrollment').classList.add('is-open');
 }
