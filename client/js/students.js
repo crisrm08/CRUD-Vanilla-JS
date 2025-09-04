@@ -7,29 +7,46 @@ document.querySelector('.cancel-edit-save-2').addEventListener('click', () => {
     document.getElementById('modal-student').classList.remove('is-open');
 })
 
-function studentsButtonClicked() {
+async function getStudents() {
+    const response = await fetch('http://localhost:5000/api/list-students');
+    const fetchedArray = await response.json();
+
+    return fetchedArray.data;
+}
+
+async function studentsButtonClicked() {
+
+    const studentsArray = await getStudents();
     htmlToRender = '';
-    htmlToRender = `
-    <article class="card">
-        <div class="card__header">
-            <h3 class="card__title">Ana Pérez</h3>
-            <span class="badge">Estudiante</span>
-        </div>
-        <p class="card__desc">
-            Email: ana@uni.edu<br>
-            Tel: 809-000-0000
-        </p>
-        <footer class="card__footer">
-            <div class="meta">
-                <span class="meta__item">ID: s_k92</span>
-            </div>
-            <div>
-                <button class="card__btn" type="button">Editar</button>
-                <button class="card__btn" type="button">Borrar</button>
-            </div>
-        </footer>
-    </article>`;
+
+    console.log(studentsArray);
+
+    studentsArray.forEach(student => {
+        htmlToRender += `
+            <article class="card">
+                <div class="card__header">
+                    <h3 class="card__title">${student.student_name}</h3>
+                    <span class="badge">Estudiante</span>
+                </div>
+                <p class="card__desc">
+                    Email: ${student.student_email}<br>
+                    Tel: ${student.student_tel}
+                </p>
+                <footer class="card__footer">
+                    <div class="meta">
+                        <span class="meta__item">${student.student_id}</span>
+                    </div>
+                    <div>
+                        <button class="card__btn" type="button">Editar</button>
+                        <button class="card__btn" type="button">Borrar</button>
+                    </div>
+                </footer>
+            </article>
+        `;
+    });
+
     objectsToRender.innerHTML = '';
+    objectsToRender.innerHTML = htmlToRender;
 
     if (document.getElementById('add-course-button')) document.getElementById('add-course-button').remove();
     if (document.getElementById('add-class-button')) document.getElementById('add-class-button').remove();

@@ -12,7 +12,6 @@ export const listAllCourses = async (req, res, next) => {
 }
 
 export const saveNewCourse = async (req, res, next) => {
-    
 
 }
 

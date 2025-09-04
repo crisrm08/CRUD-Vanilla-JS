@@ -7,28 +7,34 @@ document.querySelector('.cancel-edit-save-3').addEventListener('click', () => {
     document.getElementById('modal-enrollment').classList.remove('is-open');
 })
 
-function classButtonClicked() {
-    htmlToRender = '';
-    htmlToRender = `
-    <article class="card">
-        <div class="card__header">
-            <h3 class="card__title">Matrícula e_1a2</h3>
-            <span class="badge">Matrícula</span>
-        </div>
-        <p class="card__desc">
-            Estudiante: s_k92<br>
-            Curso: c_x7a
-        </p>
-        <footer class="card__footer">
-            <div class="meta">
-                <span class="meta__item">Estado: activo</span>
-            </div>
-            <div>
-                <button class="card__btn" type="button">Editar</button>
-                <button class="card__btn" type="button">Borrar</button>
-            </div>
-        </footer>
-    </article>`;
+async function classButtonClicked() {
+    const response = await fetch('http://localhost:5000/api/list-enrollments');
+    const fetchedArray = await response.json();
+    const enrollmentsArray = fetchedArray.data;
+    
+    enrollmentsArray.forEach(enrollment => {
+         htmlToRender += `
+            <article class="card">
+                <div class="card__header">
+                    <h3 class="card__title">${enrollment.id}</h3>
+                    <span class="badge">Matrícula</span>
+                </div>
+                <p class="card__desc">
+                    Estudiante: ${enrollment.student_id}<br>
+                    Curso: ${enrollment.course_id}
+                </p>
+                <footer class="card__footer">
+                    <div class="meta">
+                        <span class="meta__item">Estado: activo</span>
+                    </div>
+                    <div>
+                        <button class="card__btn" type="button">Editar</button>
+                        <button class="card__btn" type="button">Borrar</button>
+                    </div>
+                </footer>
+            </article>`;
+    });
+    
     
     if (document.getElementById('add-course-button')) document.getElementById('add-course-button').remove();
     if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();

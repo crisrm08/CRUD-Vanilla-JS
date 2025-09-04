@@ -9,26 +9,42 @@ document.querySelector('.cancel-edit-save').addEventListener('click', () => {
 })
 
 function coursesButtonClicked() {
-    htmlToRender = `
-    <article class="card">
-        <div class="card__header">
-            <h3 class="card__title">Programación 101</h3>
-            <span class="badge">Curso</span>
-        </div>
-        <p class="card__desc">
-            Introducción a fundamentos: variables, funciones, estructuras de control y buenas prácticas.
-            </p>
-        <footer class="card__footer">
-        <div class="meta">
-            <span class="meta__item">30 h</span>
-            <span class="meta__item">10 alumnos</span>
-        </div>
-        <div>
-            <button class="card__btn" type="button">Editar</button>
-            <button class="card__btn" type="button">Borrar</button>
-        </div>
-        </footer>
-    </article>`;
+    let fetchedArray;
+    fetch("http://localhost:5000/api/list-courses")
+    .then(response => response.json())
+    .then((data) => {
+        fetchedArray = data.data;
+        console.log(fetchedArray);
+
+        fetchedArray.forEach(course => {
+            htmlToRender += `
+                <article class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">${course.course_name}</h3>
+                        <span class="badge">${course.course_type}</span>
+                    </div>
+                    <p class="card__desc">
+                        ${course.course_description}
+                        </p>
+                    <footer class="card__footer">
+                    <div class="meta">
+                        <span class="meta__item">${course.course_hours} h</span>
+                        <span class="meta__item">${course.students_enrolled} alumnos</span>
+                    </div>
+                    <div>
+                        <button class="card__btn" type="button">Editar</button>
+                        <button class="card__btn" type="button">Borrar</button>
+                    </div>
+                    </footer>
+                </article>
+            `;
+        });
+
+        objectsToRender.innerHTML = '';
+        objectsToRender.innerHTML = htmlToRender;
+    });
+
+    
 
     if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
     if (document.getElementById('add-class-button')) document.getElementById('add-class-button').remove();
@@ -55,8 +71,6 @@ function coursesButtonClicked() {
 
     }
 
-    objectsToRender.innerHTML = '';
-    objectsToRender.innerHTML = htmlToRender;
     studentsButton.classList.remove('pressed');
     classButton.classList.remove('pressed');
     coursesButton.classList.add('pressed');
