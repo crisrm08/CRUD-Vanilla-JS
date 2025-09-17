@@ -257,6 +257,25 @@ input[type="text"]:focus {
 .input, .select, .textarea{
   width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--primary);
   background:#0F2C41;color:var(--text);outline:none;transition:.2s;}
+#course-type{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--primary);
+  background: #0F2C41;
+  color: white;
+  outline: none;
+  transition: .2s;
+  margin-bottom: 0;  
+}
+
+#course-type::placeholder{
+  color: white !important;
+  font-size: small;
+  opacity: 0.6;
+}
+
+
 .input::placeholder,.textarea::placeholder{color:var(--text-muted);}
 .input:focus,.select:focus,.textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(103,192,144,.25);}
 .textarea{min-height:96px;resize:vertical;}

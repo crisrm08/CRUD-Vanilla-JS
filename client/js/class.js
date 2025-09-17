@@ -68,6 +68,32 @@ async function classButtonClicked() {
     inputSearch.placeholder = 'Buscar matrícula...';
 }
 
-function handleNewClass() { 
+async function handleNewClass() { 
     document.getElementById('modal-enrollment').classList.add('is-open');
+    const Response = await fetch('http://localhost:5000/api/list-enrollments');
+    const fetchedEnrollments = await Response.json();
+    const fetchedEnrollmentsArray = fetchedEnrollments.data;
+
+    const studentIds = fetchedEnrollmentsArray.map(enrollmentObject => enrollmentObject.student_id);
+    const coursesIds = fetchedEnrollmentsArray.map(enrollmentObject => enrollmentObject.course_id);
+
+    const studentSelect = document.getElementById("enr-student");
+    const courseSelect = document.getElementById("enr-course");
+
+    studentSelect.innerHTML = "";
+    courseSelect.innerHTML = "";
+
+    studentIds.forEach((studentId) => {
+        const newOption = document.createElement('option');
+        newOption.value = studentId;
+        newOption.textContent = studentId;
+        studentSelect.appendChild(newOption);
+    })
+
+    coursesIds.forEach((courseId) => {
+        const newOption = document.createElement('option');
+        newOption.value = courseId;
+        newOption.textContent = courseId;
+        courseSelect.appendChild(newOption);
+    });
 }

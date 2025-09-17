@@ -28,10 +28,6 @@
                 </header>
                 <div class="modal__body">
                     <div class="field">
-                        <label class="label" for="course-id">ID del curso</label>
-                        <input class="input" id="course-id" type="text" placeholder="c_x7a">
-                    </div>
-                    <div class="field">
                         <label class="label" for="course-title">Título</label>
                         <input class="input" id="course-title" type="text" placeholder="Programación 101">
                     </div>
@@ -40,11 +36,12 @@
                             <label class="label" for="course-hours">Horas</label>
                             <input class="input" id="course-hours" type="number" placeholder="30">
                         </div>
-                        <div class="field">
-                            <label class="label" for="course-capacity">Cupo</label>
-                            <input class="input" id="course-capacity" type="number" placeholder="25">
+                         <div class="field">
+                            <label class="label" for="course-type">Tipo</label>
+                            <input class="input" id="course-type" type="text" placeholder="Teoría-Práctica">
                         </div>
                     </div>
+                   
                     <div class="field">
                         <label class="label" for="course-desc">Descripción</label>
                         <textarea class="textarea" id="course-desc" placeholder="Breve descripción del curso..."></textarea>
@@ -85,11 +82,6 @@
                             <input class="input" id="st-phone" type="tel" placeholder="809-000-0000">
                         </div>
                     </div>
-                    <div class="field">
-                        <span class="legend">Notas (opcional)</span>
-                        <div class="hr"></div>
-                        <textarea class="textarea" id="st-notes" placeholder="Observaciones, prerequisitos, etc."></textarea>
-                    </div>
                 </div>
                 <footer class="modal__footer">
                     <button class="btn cancel-edit-save-2" type="button" data-close>Cancelar</button>
@@ -107,10 +99,7 @@
                 </header>
                 <div class="modal__body">
                     <div class="row">
-                        <div class="field">
-                            <label class="label" for="enr-id">ID matrícula</label>
-                            <input class="input" id="enr-id" type="text" placeholder="e_1a2">
-                        </div>
+                        
                         <div class="field">
                         <label class="label" for="enr-status">Estado</label>
                         <select class="select" id="enr-status">
@@ -123,17 +112,12 @@
                     <div class="row">
                         <div class="field">
                             <label class="label" for="enr-student">ID estudiante</label>
-                            <input class="input" id="enr-student" type="text" placeholder="s_k92">
+                            <select class="select" id="enr-student"></select>
                         </div>
                         <div class="field">
                             <label class="label" for="enr-course">ID curso</label>
-                            <input class="input" id="enr-course" type="text" placeholder="c_x7a">
+                            <select class="select" id="enr-course"></select>
                         </div>
-                    </div>
-                    <div class="field">
-                        <span class="legend">Comentario (opcional)</span>
-                        <div class="hr"></div>
-                        <textarea class="textarea" id="enr-notes" placeholder="Motivo de estado, referencias, etc."></textarea>
                     </div>
                 </div>
                 <footer class="modal__footer">
