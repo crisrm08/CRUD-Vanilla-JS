@@ -1,10 +1,9 @@
 import { pool } from "../config/db.js";
 
-export const listAllCourses = async (req, res, next) => {
+export const listAllCourses = async (res, next) => {
     try {
         const { rows } = await pool.query(`SELECT id, course_name, course_type, course_description, course_hours, students_enrolled 
         FROM courses ORDER BY id DESC`);
-
         res.json({data: rows});
     } catch (error) {
         next(error);
@@ -38,5 +37,11 @@ export const saveEditCourse = async (req, res, next) => {
 }
 
 export const deleteCourse = async (req, res, next) => {
-    
+    try {
+        const id = req.params.id;
+        await pool.query(`DELETE FROM courses WHERE id = ($1)`, [id]);
+        res.status(204).send({success: "Curso borrado"});
+    } catch (error) {
+        next(error);
+    }
 }

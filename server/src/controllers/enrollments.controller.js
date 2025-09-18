@@ -42,5 +42,11 @@ export const saveEditEnrollment = async (req, res, next) => {
 }
 
 export const deletEnrollment = async (req, res, next) => {
-    
+    try {
+        const id = req.params.id;
+        await pool.query(`DELETE FROM enrollments WHERE id = ($1)`, [id]);
+        res.status(204).send({success: "Matricula elimindad"});
+    } catch (error) {
+        next(error);
+    }
 }

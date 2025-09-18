@@ -36,5 +36,11 @@ export const saveEditStudent = async (req, res, next) => {
 }
 
 export const deleteStudent = async (req, res, next) => {
-    
+    try {
+        const id = req.params.id;
+        await pool.query(`DELETE FROM students WHERE id = ($1)`, [id]);
+        res.status(204).send({success: "Curso borrado"});;
+    } catch (error) {
+        next(error);
+    }
 }
