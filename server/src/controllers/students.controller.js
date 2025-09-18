@@ -24,7 +24,15 @@ export const saveNewStudent = async (req, res, next) => {
 }
 
 export const saveEditStudent = async (req, res, next) => {
-
+    try {
+        const { id, studentID, studentName, studentEmail, studentTel } = req.body;
+        await pool.query(`UPDATE students SET student_id = ($1), student_name = ($2), student_email = ($3), student_tel = ($4)
+            WHERE id = ($5)`, [studentID, studentName, studentEmail, studentTel, id]
+        );
+        res.status(200).send({success: "Estudiante actualizado"});
+    } catch (error) {
+        next(error);
+    }
 }
 
 export const deleteStudent = async (req, res, next) => {

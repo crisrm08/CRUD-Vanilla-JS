@@ -25,7 +25,16 @@ export const saveNewCourse = async (req, res, next) => {
 }
 
 export const saveEditCourse = async (req, res, next) => {
+    try {
+        const { id, courseTitle, courseHours, courseType, courseDescription } = req.body;
+        await pool.query(`UPDATE courses SET course_name = ($1), course_type = ($2), course_hours = ($3), course_description = ($4)
+            WHERE id = ($5)`,[courseTitle, courseType, courseHours, courseDescription, id] 
+        );
 
+        res.status(200).send({success: "Curso actualizado"});
+    } catch (error) {
+        next(error);
+    }
 }
 
 export const deleteCourse = async (req, res, next) => {

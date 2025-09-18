@@ -32,7 +32,13 @@ export const saveNewEnrollment = async (req, res, next) => {
 }
 
 export const saveEditEnrollment = async (req, res, next) => {
-
+    try {
+        const {id, studentId, courseId} = req.body;
+        await pool.query(`UPDATE enrollments SET student_id = ($1), course_id = ($2) WHERE id = ($3)`, [studentId, courseId, id]);
+        res.status(200).send({success: "Matrícula actualizada"});
+    } catch (error) {
+        next(error);
+    }
 }
 
 export const deletEnrollment = async (req, res, next) => {
