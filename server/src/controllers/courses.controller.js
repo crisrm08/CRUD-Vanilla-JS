@@ -1,16 +1,16 @@
 import { pool } from "../config/db.js";
 
-export const listAllCourses = async (res, next) => {
+export const listAllCourses = async (req, res) => {
     try {
         const { rows } = await pool.query(`SELECT id, course_name, course_type, course_description, course_hours, students_enrolled 
         FROM courses ORDER BY id DESC`);
         res.json({data: rows});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 
-export const saveNewCourse = async (req, res, next) => {
+export const saveNewCourse = async (req, res) => {
     try {
         const { courseTitle, courseHours, courseType, courseDescription } = req.body;
         await pool.query(`INSERT INTO courses (course_name, course_hours, course_type, course_description) VALUES
@@ -19,11 +19,11 @@ export const saveNewCourse = async (req, res, next) => {
         res.json({ok : true});
         
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 
-export const saveEditCourse = async (req, res, next) => {
+export const saveEditCourse = async (req, res) => {
     try {
         const { id, courseTitle, courseHours, courseType, courseDescription } = req.body;
         await pool.query(`UPDATE courses SET course_name = ($1), course_type = ($2), course_hours = ($3), course_description = ($4)
@@ -32,16 +32,16 @@ export const saveEditCourse = async (req, res, next) => {
 
         res.status(200).send({success: "Curso actualizado"});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 
-export const deleteCourse = async (req, res, next) => {
+export const deleteCourse = async (req, res) => {
     try {
         const id = req.params.id;
         await pool.query(`DELETE FROM courses WHERE id = ($1)`, [id]);
         res.status(204).send({success: "Curso borrado"});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }

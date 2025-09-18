@@ -1,16 +1,16 @@
 import { pool } from "../config/db.js"
 
-export const listAllEnrollments = async (req, res, next) => {
+export const listAllEnrollments = async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT id, student_id, course_id FROM enrollments ORDER BY id DESC");
 
         res.json({data: rows});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 
-export const saveNewEnrollment = async (req, res, next) => {
+export const saveNewEnrollment = async (req, res) => {
     try {
         const { studentId, courseId } = req.body;
         const existingAlready = await pool.query(`SELECT * FROM enrollments WHERE student_id = $1 AND course_id = $2`,
@@ -27,26 +27,26 @@ export const saveNewEnrollment = async (req, res, next) => {
         }
         res.status(201).send({success: "Matrícula creada"});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 
-export const saveEditEnrollment = async (req, res, next) => {
+export const saveEditEnrollment = async (req, res) => {
     try {
         const {id, studentId, courseId} = req.body;
         await pool.query(`UPDATE enrollments SET student_id = ($1), course_id = ($2) WHERE id = ($3)`, [studentId, courseId, id]);
         res.status(200).send({success: "Matrícula actualizada"});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 
-export const deletEnrollment = async (req, res, next) => {
+export const deletEnrollment = async (req, res) => {
     try {
         const id = req.params.id;
         await pool.query(`DELETE FROM enrollments WHERE id = ($1)`, [id]);
         res.status(204).send({success: "Matricula elimindad"});
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
