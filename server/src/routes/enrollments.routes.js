@@ -4,7 +4,7 @@ import { listAllEnrollments, saveNewEnrollment, saveEditEnrollment, deletEnrollm
 const router = Router();
 
 router.get("/list-enrollments", listAllEnrollments);
-router.post("/new-enrollment", saveNewEnrollment);
+router.post("/save-enrollment", saveNewEnrollment);
 router.put("/edit-enrollment", saveEditEnrollment)
 router.delete("/delete-enrollment/:id", deletEnrollment);
 

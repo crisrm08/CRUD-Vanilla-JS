@@ -9,6 +9,7 @@ document.querySelector('.cancel-edit-save').addEventListener('click', () => {
 })
 
 function coursesButtonClicked() {
+    htmlToRender = '';
     let fetchedArray;
     fetch("http://localhost:5000/api/list-courses")
     .then(response => response.json())
@@ -44,8 +45,6 @@ function coursesButtonClicked() {
         objectsToRender.innerHTML = htmlToRender;
     });
 
-    
-
     if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
     if (document.getElementById('add-class-button')) document.getElementById('add-class-button').remove();
     if (!document.getElementById('add-course-button')) {
@@ -67,8 +66,7 @@ function coursesButtonClicked() {
         bodyElement.insertBefore(addCourseButton, referenceElement);
 
         const addButton = document.querySelector('.add-course-button');
-        addButton.addEventListener('click', handleNewCourse);
-
+        addButton.addEventListener('click', () => document.getElementById('modal-course').classList.add('is-open'));
     }
 
     studentsButton.classList.remove('pressed');
@@ -79,6 +77,23 @@ function coursesButtonClicked() {
 
 coursesButtonClicked();
 
-function handleNewCourse() { 
-    document.getElementById('modal-course').classList.add('is-open');
-}
+const newCourseForm = document.getElementById('course-form');
+newCourseForm.addEventListener("submit", handleCourseForm);
+
+async function handleCourseForm(e) {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(e.target));
+
+    const response = await fetch("http://localhost:5000/api/new-course", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+
+    const json = await response.json();
+
+    newCourseForm.reset();
+    document.getElementById('modal-course').classList.remove('is-open');
+    coursesButtonClicked();
+};

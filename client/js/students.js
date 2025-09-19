@@ -16,8 +16,8 @@ async function getStudents() {
 
 async function studentsButtonClicked() {
 
-    const studentsArray = await getStudents();
     htmlToRender = '';
+    const studentsArray = await getStudents();
 
     console.log(studentsArray);
 
@@ -69,7 +69,7 @@ async function studentsButtonClicked() {
         bodyElement.insertBefore(addCourseButton, referenceElement);
 
         const addButton = document.querySelector('.add-student-button');
-        addButton.addEventListener('click', handleNewStudent);
+        addButton.addEventListener('click', () =>  document.getElementById('modal-student').classList.add('is-open'));
     }
     
     objectsToRender.innerHTML = htmlToRender;
@@ -79,6 +79,24 @@ async function studentsButtonClicked() {
     inputSearch.placeholder = 'Buscar estudiante...';
 }
 
-function handleNewStudent() { 
-    document.getElementById('modal-student').classList.add('is-open');
+
+const newStudentForm = document.getElementById('student-form');
+newStudentForm.addEventListener("submit", handleStudentForm);
+
+async function handleStudentForm(e) {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(e.target));
+
+    const response = await fetch("http://localhost:5000/api/save-student", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+
+    const json = response.json();
+    console.log(json);
+
+    document.getElementById('modal-student').classList.remove('is-open');
+    studentsButtonClicked();
 }

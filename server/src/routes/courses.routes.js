@@ -5,7 +5,7 @@ import { listAllCourses, saveNewCourse, saveEditCourse, deleteCourse } from "../
 const router = Router();
 
 router.get("/list-courses", listAllCourses);
-router.post("/new-course", saveNewCourse);
+router.post("/save-course", saveNewCourse);
 router.put("/edit-course", saveEditCourse);
 router.delete("/delete-course/:id", deleteCourse);
 

@@ -14,7 +14,7 @@ export const saveNewCourse = async (req, res) => {
     try {
         const { courseTitle, courseHours, courseType, courseDescription } = req.body;
         await pool.query(`INSERT INTO courses (course_name, course_hours, course_type, course_description) VALUES
-            ($1, $2, $3, $4)`, [courseTitle, courseHours, courseType, courseDescription]);
+            ($1, $2, $3, $4)`, [courseTitle, Number(courseHours), courseType, courseDescription]);
         res.status(201);
         res.json({ok : true});
         

@@ -8,6 +8,7 @@ document.querySelector('.cancel-edit-save-3').addEventListener('click', () => {
 })
 
 async function classButtonClicked() {
+    htmlToRender="";
     const response = await fetch('http://localhost:5000/api/list-enrollments');
     const fetchedArray = await response.json();
     const enrollmentsArray = fetchedArray.data;
@@ -70,30 +71,56 @@ async function classButtonClicked() {
 
 async function handleNewClass() { 
     document.getElementById('modal-enrollment').classList.add('is-open');
-    const Response = await fetch('http://localhost:5000/api/list-enrollments');
-    const fetchedEnrollments = await Response.json();
-    const fetchedEnrollmentsArray = fetchedEnrollments.data;
+    const Response1 = await fetch('http://localhost:5000/api/list-students');
+    const Response2 = await fetch('http://localhost:5000/api/list-courses');
 
-    const studentIds = fetchedEnrollmentsArray.map(enrollmentObject => enrollmentObject.student_id);
-    const coursesIds = fetchedEnrollmentsArray.map(enrollmentObject => enrollmentObject.course_id);
+    const fetchedStudentsObject = await Response1.json();
+    const studentsArray = fetchedStudentsObject.data;
 
-    const studentSelect = document.getElementById("enr-student");
-    const courseSelect = document.getElementById("enr-course");
+    const fetchedCoursesObject = await Response2.json();
+    const coursesArray = fetchedCoursesObject.data;
+    
+    const studentSelect = document.getElementById('enr-student');
+    const courseSelect = document.getElementById('enr-course');
 
-    studentSelect.innerHTML = "";
-    courseSelect.innerHTML = "";
+    studentSelect.innerHTML= '';
+    courseSelect.innerHTML= '';
 
-    studentIds.forEach((studentId) => {
-        const newOption = document.createElement('option');
-        newOption.value = studentId;
-        newOption.textContent = studentId;
-        studentSelect.appendChild(newOption);
-    })
+    const studentIds = studentsArray.map((studentObject) => studentObject.student_id);
+    const coursesIds = coursesArray.map((courseObject) => courseObject.id);
 
-    coursesIds.forEach((courseId) => {
-        const newOption = document.createElement('option');
-        newOption.value = courseId;
-        newOption.textContent = courseId;
-        courseSelect.appendChild(newOption);
+    studentIds.forEach(studentId => {
+        const newSelectOption = document.createElement('option');
+        newSelectOption.value = studentId;
+        newSelectOption.textContent = studentId;
+        studentSelect.appendChild(newSelectOption);
     });
+
+    coursesIds.forEach(courseId => {
+        const newSelectOption = document.createElement('option');
+        newSelectOption.value = courseId;
+        newSelectOption.textContent = courseId;
+        courseSelect.appendChild(newSelectOption);
+    });
+}
+
+const newEnrollmentForm = document.getElementById('enrollment-form');
+newEnrollmentForm.addEventListener('submit', handleSaveNewClass);
+
+async function handleSaveNewClass(e){
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(e.target));
+
+    const response = await fetch("http://localhost:5000/api/save-enrollment", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    });
+
+    const json = response.json();
+    console.log(json);
+
+    document.getElementById('modal-enrollment').classList.remove('is-open');
+    classButtonClicked();
 }
