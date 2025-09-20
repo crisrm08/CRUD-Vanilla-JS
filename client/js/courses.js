@@ -2,6 +2,8 @@ import { objectsToRender, inputSearch, coursesButton, studentsButton, classButto
 
 
 let htmlToRender = '';
+let fetchedArray;
+
 coursesButton.addEventListener('click', coursesButtonClicked);
  
 document.querySelector('.cancel-edit-save').addEventListener('click', () => {
@@ -10,7 +12,6 @@ document.querySelector('.cancel-edit-save').addEventListener('click', () => {
 
 function coursesButtonClicked() {
     htmlToRender = '';
-    let fetchedArray;
     fetch("http://localhost:5000/api/list-courses")
     .then(response => response.json())
     .then((data) => {
@@ -33,7 +34,8 @@ function coursesButtonClicked() {
                         <span class="meta__item">${course.students_enrolled} alumnos</span>
                     </div>
                     <div>
-                        <button class="card__btn" type="button">Editar</button>
+                        <input type="hidden" value=${course.id}>
+                        <button class="card__btn edit-course-button" type="button" data-id="${course.id}">Editar</button>
                         <button class="card__btn" type="button">Borrar</button>
                     </div>
                     </footer>
@@ -43,6 +45,9 @@ function coursesButtonClicked() {
 
         objectsToRender.innerHTML = '';
         objectsToRender.innerHTML = htmlToRender;
+        document.querySelectorAll(".edit-course-button").forEach(btn => {
+            btn.addEventListener("click", openEditModal);
+        });
     });
 
     if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
@@ -61,12 +66,13 @@ function coursesButtonClicked() {
                     </button>
                 </div>
             </section>
-            `;
+        `;
+        
         const referenceElement = document.querySelector('.objects-card-grid');
         bodyElement.insertBefore(addCourseButton, referenceElement);
 
         const addButton = document.querySelector('.add-course-button');
-        addButton.addEventListener('click', () => document.getElementById('modal-course').classList.add('is-open'));
+        addButton.addEventListener('click', openSaveModal);
     }
 
     studentsButton.classList.remove('pressed');
@@ -76,6 +82,33 @@ function coursesButtonClicked() {
 }
 
 coursesButtonClicked();
+
+function openEditModal(e) {
+    document.getElementById('modal-course').classList.add('is-open');
+    document.querySelector('.modal__title').textContent = 'Editar curso';
+
+    const btn = e.currentTarget;            
+    const clickedCourseId = btn.dataset.id;
+    console.log(clickedCourseId);
+     
+    
+    const courseToEdit = fetchedArray.find((course) => course.id == clickedCourseId);
+    console.log(courseToEdit);
+    
+    document.getElementById('course-title').value = courseToEdit.course_name;
+    document.getElementById('course-hours').value = courseToEdit.course_hours;
+    document.getElementById('course-type').value = courseToEdit.course_type;
+    document.getElementById('course-desc').value = courseToEdit.course_description;
+}
+
+function openSaveModal() {
+    document.getElementById('modal-course').classList.add('is-open');
+    document.querySelector('.modal__title').textContent = 'Nuevo Curso';
+    document.getElementById('course-title').value = "";
+    document.getElementById('course-hours').value = "";
+    document.getElementById('course-type').value = "";
+    document.getElementById('course-desc').value = "";
+}
 
 const newCourseForm = document.getElementById('course-form');
 newCourseForm.addEventListener("submit", handleCourseForm);
