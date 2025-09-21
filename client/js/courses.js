@@ -83,17 +83,16 @@ function coursesButtonClicked() {
 
 coursesButtonClicked();
 
-function openEditModal(e) {
+function openEditModal(e) {  
     document.getElementById('modal-course').classList.add('is-open');
     document.querySelector('.modal__title').textContent = 'Editar curso';
 
     const btn = e.currentTarget;            
     const clickedCourseId = btn.dataset.id;
-    console.log(clickedCourseId);
+    document.getElementById("course-form").dataset.mode = "edit";
+    document.getElementById("course-form").dataset.id = clickedCourseId;
      
-    
     const courseToEdit = fetchedArray.find((course) => course.id == clickedCourseId);
-    console.log(courseToEdit);
     
     document.getElementById('course-title').value = courseToEdit.course_name;
     document.getElementById('course-hours').value = courseToEdit.course_hours;
@@ -104,6 +103,7 @@ function openEditModal(e) {
 function openSaveModal() {
     document.getElementById('modal-course').classList.add('is-open');
     document.querySelector('.modal__title').textContent = 'Nuevo Curso';
+    document.getElementById("course-form").dataset.mode = "create";
     document.getElementById('course-title').value = "";
     document.getElementById('course-hours').value = "";
     document.getElementById('course-type').value = "";
@@ -116,16 +116,29 @@ newCourseForm.addEventListener("submit", handleCourseForm);
 async function handleCourseForm(e) {
     e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(e.target));
+    const mode = document.getElementById("course-form").dataset.mode;
+    const id = document.getElementById("course-form").dataset.id;
+    
+    if (mode === "create") {
+        const data = Object.fromEntries(new FormData(e.target));
 
-    const response = await fetch("http://localhost:5000/api/new-course", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
+        await fetch("http://localhost:5000/api/save-course", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
 
-    const json = await response.json();
-
+    } else {
+        const data = Object.fromEntries(new FormData(e.target));
+        data.id = id;
+             
+        await fetch("http://localhost:5000/api/edit-course", {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+    }
+        
     newCourseForm.reset();
     document.getElementById('modal-course').classList.remove('is-open');
     coursesButtonClicked();
