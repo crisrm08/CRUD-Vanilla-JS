@@ -1,6 +1,7 @@
 import { objectsToRender, inputSearch, classButton, coursesButton, studentsButton} from "./common.js";
 
 let htmlToRender = '';
+let enrollmentsArray;
 classButton.addEventListener('click', classButtonClicked);
 
 document.querySelector('.cancel-edit-save-3').addEventListener('click', () => {
@@ -11,7 +12,7 @@ async function classButtonClicked() {
     htmlToRender="";
     const response = await fetch('http://localhost:5000/api/list-enrollments');
     const fetchedArray = await response.json();
-    const enrollmentsArray = fetchedArray.data;
+    enrollmentsArray = fetchedArray.data;
     
     enrollmentsArray.forEach(enrollment => {
          htmlToRender += `
@@ -29,14 +30,13 @@ async function classButtonClicked() {
                         <span class="meta__item">Estado: activo</span>
                     </div>
                     <div>
-                        <button class="card__btn" type="button">Editar</button>
+                        <button class="card__btn edit-enrollment-button" data-id=${enrollment.id} type="button">Editar</button>
                         <button class="card__btn" type="button">Borrar</button>
                     </div>
                 </footer>
             </article>`;
     });
-    
-    
+        
     if (document.getElementById('add-course-button')) document.getElementById('add-course-button').remove();
     if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
     if (!document.getElementById('add-class-button')){
@@ -58,7 +58,7 @@ async function classButtonClicked() {
         bodyElement.insertBefore(addCourseButton, referenceElement);
 
         const addButton = document.querySelector('.add-class-button');
-        addButton.addEventListener('click', handleNewClass);
+        addButton.addEventListener('click', openSaveModal);
     }
 
     objectsToRender.innerHTML = '';
@@ -67,10 +67,10 @@ async function classButtonClicked() {
     classButton.classList.add('pressed');
     coursesButton.classList.remove('pressed');
     inputSearch.placeholder = 'Buscar matrícula...';
+    document.querySelectorAll(".edit-enrollment-button").forEach((btn) => btn.addEventListener("click", openEditModal));
 }
 
-async function handleNewClass() { 
-    document.getElementById('modal-enrollment').classList.add('is-open');
+async function populateOptions(){
     const Response1 = await fetch('http://localhost:5000/api/list-students');
     const Response2 = await fetch('http://localhost:5000/api/list-courses');
 
@@ -102,6 +102,28 @@ async function handleNewClass() {
         newSelectOption.textContent = courseId;
         courseSelect.appendChild(newSelectOption);
     });
+}
+
+async function openEditModal(e) {
+    document.getElementById('modal-enrollment').classList.add('is-open');
+    document.querySelector(".class-title").textContent = "Editar matrícula";
+
+    const btn = e.currentTarget;
+    const clickedEnrollmentId = btn.dataset.id;
+
+    await populateOptions();
+
+    const enrollmentToEdit = enrollmentsArray.find((enrollment) => enrollment.id == clickedEnrollmentId);
+    console.log(enrollmentToEdit);
+    document.getElementById("enr-student").value = enrollmentToEdit.student_id;  
+    document.getElementById("enr-course").value = enrollmentToEdit.course_id;   
+}
+
+async function openSaveModal() { 
+    document.getElementById('modal-enrollment').classList.add('is-open');
+    document.querySelector(".class-title").textContent = "Nueva matrícula";
+
+    populateOptions();
 }
 
 const newEnrollmentForm = document.getElementById('enrollment-form');
