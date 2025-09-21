@@ -94,6 +94,9 @@ function openEditModal(e) {
     const btn = e.currentTarget;
     const clickedStudentId = btn.dataset.id;
 
+    document.getElementById("student-form").dataset.mode = "edit";
+    document.getElementById("student-form").dataset.id = clickedStudentId;
+
     const studentToEdit = studentsArray.find((student) => student.id == clickedStudentId);
     document.getElementById("st-id").value = studentToEdit.student_id;
     document.getElementById("st-name").value = studentToEdit.student_name;
@@ -104,21 +107,33 @@ function openEditModal(e) {
 function openSaveModal() {
     document.getElementById('modal-student').classList.add('is-open');
     document.querySelector('.student-title').textContent = 'Nuevo estudiante';
+    document.getElementById("student-form").dataset.mode = "create";
 }
 
 async function handleStudentForm(e) {
     e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(e.target));
+    const mode = document.getElementById("student-form").dataset.mode;
+    const id = document.getElementById("student-form").dataset.id;
 
-    const response = await fetch("http://localhost:5000/api/save-student", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
+    if (mode === "create") {
+        const data = Object.fromEntries(new FormData(e.target));
 
-    const json = response.json();
-    console.log(json);
+        await fetch("http://localhost:5000/api/save-student", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    } else {
+        const data = Object.fromEntries(new FormData(e.target));
+        data.id = id;
+
+        await fetch("http://localhost:5000/api/edit-student", {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    }
 
     document.getElementById('modal-student').classList.remove('is-open');
     studentsButtonClicked();
