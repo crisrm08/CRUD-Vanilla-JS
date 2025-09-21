@@ -111,6 +111,9 @@ async function openEditModal(e) {
     const btn = e.currentTarget;
     const clickedEnrollmentId = btn.dataset.id;
 
+    document.getElementById("enrollment-form").dataset.mode = "edit";
+    document.getElementById("enrollment-form").dataset.id = clickedEnrollmentId;
+
     await populateOptions();
 
     const enrollmentToEdit = enrollmentsArray.find((enrollment) => enrollment.id == clickedEnrollmentId);
@@ -122,6 +125,7 @@ async function openEditModal(e) {
 async function openSaveModal() { 
     document.getElementById('modal-enrollment').classList.add('is-open');
     document.querySelector(".class-title").textContent = "Nueva matrícula";
+    document.getElementById("enrollment-form").dataset.mode = "create";
 
     populateOptions();
 }
@@ -132,16 +136,27 @@ newEnrollmentForm.addEventListener('submit', handleSaveNewClass);
 async function handleSaveNewClass(e){
     e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(e.target));
+    const mode = document.getElementById("enrollment-form").dataset.mode;
+    const id = document.getElementById("enrollment-form").dataset.id;
 
-    const response = await fetch("http://localhost:5000/api/save-enrollment", {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    });
+    if (mode === "create") {
+        const data = Object.fromEntries(new FormData(e.target));
 
-    const json = response.json();
-    console.log(json);
+        await fetch("http://localhost:5000/api/save-enrollment", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+    } else {
+        const data = Object.fromEntries(new FormData(e.target));
+        data.id = id;
+        
+        await fetch("http://localhost:5000/api/edit-enrollment", {
+            method: "PUT",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+    }
 
     document.getElementById('modal-enrollment').classList.remove('is-open');
     classButtonClicked();
