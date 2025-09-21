@@ -1,6 +1,7 @@
 import { objectsToRender, inputSearch, studentsButton, coursesButton, classButton} from "./common.js";
 
 let htmlToRender = '';
+let studentsArray;
 studentsButton.addEventListener('click', studentsButtonClicked);
 
 document.querySelector('.cancel-edit-save-2').addEventListener('click', () => {
@@ -17,7 +18,7 @@ async function getStudents() {
 async function studentsButtonClicked() {
 
     htmlToRender = '';
-    const studentsArray = await getStudents();
+    studentsArray = await getStudents();
 
     console.log(studentsArray);
 
@@ -37,7 +38,7 @@ async function studentsButtonClicked() {
                         <span class="meta__item">${student.student_id}</span>
                     </div>
                     <div>
-                        <button class="card__btn" type="button">Editar</button>
+                        <button class="card__btn edit-student-button" type="button" data-id="${student.id}">Editar</button>
                         <button class="card__btn" type="button">Borrar</button>
                     </div>
                 </footer>
@@ -64,12 +65,12 @@ async function studentsButtonClicked() {
                     </button>
                 </div>
             </section>
-            `;
+        `;
         const referenceElement = document.querySelector('.objects-card-grid');
         bodyElement.insertBefore(addCourseButton, referenceElement);
 
         const addButton = document.querySelector('.add-student-button');
-        addButton.addEventListener('click', () =>  document.getElementById('modal-student').classList.add('is-open'));
+        addButton.addEventListener('click', openSaveModal);
     }
     
     objectsToRender.innerHTML = htmlToRender;
@@ -77,11 +78,33 @@ async function studentsButtonClicked() {
     classButton.classList.remove('pressed');
     coursesButton.classList.remove('pressed');
     inputSearch.placeholder = 'Buscar estudiante...';
-}
 
+    document.querySelectorAll('.edit-student-button').forEach(btn => {
+        btn.addEventListener("click", openEditModal);
+    });;
+}
 
 const newStudentForm = document.getElementById('student-form');
 newStudentForm.addEventListener("submit", handleStudentForm);
+
+function openEditModal(e) {
+    document.getElementById('modal-student').classList.add('is-open');
+    document.querySelector('.student-title').textContent = 'Editar estudiante';
+
+    const btn = e.currentTarget;
+    const clickedStudentId = btn.dataset.id;
+
+    const studentToEdit = studentsArray.find((student) => student.id == clickedStudentId);
+    document.getElementById("st-id").value = studentToEdit.student_id;
+    document.getElementById("st-name").value = studentToEdit.student_name;
+    document.getElementById("st-email").value = studentToEdit.student_email;
+    document.getElementById("st-phone").value = studentToEdit.student_tel;
+}
+
+function openSaveModal() {
+    document.getElementById('modal-student').classList.add('is-open');
+    document.querySelector('.student-title').textContent = 'Nuevo estudiante';
+}
 
 async function handleStudentForm(e) {
     e.preventDefault();
