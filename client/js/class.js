@@ -31,7 +31,7 @@ async function classButtonClicked() {
                     </div>
                     <div>
                         <button class="card__btn edit-enrollment-button" data-id=${enrollment.id} type="button">Editar</button>
-                        <button class="card__btn" type="button">Borrar</button>
+                        <button class="card__btn delete-enrollment-button" type="button" data-id=${enrollment.id}>Borrar</button>
                     </div>
                 </footer>
             </article>`;
@@ -68,6 +68,7 @@ async function classButtonClicked() {
     coursesButton.classList.remove('pressed');
     inputSearch.placeholder = 'Buscar matrícula...';
     document.querySelectorAll(".edit-enrollment-button").forEach((btn) => btn.addEventListener("click", openEditModal));
+    document.querySelectorAll(".delete-enrollment-button").forEach((btn) => btn.addEventListener("click", deleteEnrollment));
 }
 
 async function populateOptions(){
@@ -160,4 +161,17 @@ async function handleSaveNewClass(e){
 
     document.getElementById('modal-enrollment').classList.remove('is-open');
     classButtonClicked();
+}
+
+function deleteEnrollment(e) {
+    e.preventDefault();
+
+    const pressedBtn = e.currentTarget;
+    const enrollmentIdToBeDeleted = pressedBtn.dataset.id;
+
+    fetch(`http://localhost:5000/api/delete-enrollment/${enrollmentIdToBeDeleted}`,{
+            method: "DELETE"
+        }
+    )
+    .then(() => classButtonClicked());
 }
