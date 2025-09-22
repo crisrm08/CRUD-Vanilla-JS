@@ -39,7 +39,7 @@ async function studentsButtonClicked() {
                     </div>
                     <div>
                         <button class="card__btn edit-student-button" type="button" data-id="${student.id}">Editar</button>
-                        <button class="card__btn" type="button">Borrar</button>
+                        <button class="card__btn delete-student-button" type="button" data-id="${student.id}">Borrar</button>
                     </div>
                 </footer>
             </article>
@@ -82,6 +82,10 @@ async function studentsButtonClicked() {
     document.querySelectorAll('.edit-student-button').forEach(btn => {
         btn.addEventListener("click", openEditModal);
     });;
+
+    document.querySelectorAll('.delete-student-button').forEach(btn => {
+        btn.addEventListener("click", deleteStudent);
+    })
 }
 
 const newStudentForm = document.getElementById('student-form');
@@ -137,4 +141,17 @@ async function handleStudentForm(e) {
 
     document.getElementById('modal-student').classList.remove('is-open');
     studentsButtonClicked();
+}
+
+function deleteStudent(e) {
+    e.preventDefault();
+
+    const pressedBtn = e.currentTarget;
+    const studentIdToBeDeleted = pressedBtn.dataset.id;
+
+    fetch(`http://localhost:5000/api/delete-student/${studentIdToBeDeleted}`,{
+            method: "DELETE"
+        }
+    )
+    .then(() => studentsButtonClicked());
 }
