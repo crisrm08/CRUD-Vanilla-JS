@@ -1,17 +1,16 @@
 import { objectsToRender, inputSearch, coursesButton, studentsButton, classButton} from "./common.js";
 
-
 let htmlToRender = '';
 let fetchedArray;
 
 coursesButton.addEventListener('click', coursesButtonClicked);
- 
 document.querySelector('.cancel-edit-save').addEventListener('click', () => {
     document.getElementById('modal-course').classList.remove('is-open');
 })
 
 function coursesButtonClicked() {
     htmlToRender = '';
+    fetchedArray = '';
     fetch("http://localhost:5000/api/list-courses")
     .then(response => response.json())
     .then((data) => {
@@ -34,9 +33,8 @@ function coursesButtonClicked() {
                         <span class="meta__item">${course.students_enrolled} alumnos</span>
                     </div>
                     <div>
-                        <input type="hidden" value=${course.id}>
                         <button class="card__btn edit-course-button" type="button" data-id="${course.id}">Editar</button>
-                        <button class="card__btn" type="button">Borrar</button>
+                        <button class="card__btn delete-course-button" type="button" data-id="${course.id}">Borrar</button>
                     </div>
                     </footer>
                 </article>
@@ -48,6 +46,10 @@ function coursesButtonClicked() {
         document.querySelectorAll(".edit-course-button").forEach(btn => {
             btn.addEventListener("click", openEditModal);
         });
+
+        document.querySelectorAll(".delete-course-button").forEach(btn => {
+            btn.addEventListener("click", deleteCourse);
+        })
     });
 
     if (document.getElementById('add-student-button')) document.getElementById('add-student-button').remove();
@@ -57,16 +59,15 @@ function coursesButtonClicked() {
         const addCourseButton = document.createElement('div');
         addCourseButton.innerHTML =  `
         <section class="toolbar" id="add-course-button">
-                <div class="toolbar__actions">
-                    <button class="btn add-course-button" 
-                        type="button" 
-                        data-modal-open="card-modal" 
-                        data-modal-mode="create">
-                        + Crear nuevo curso
-                    </button>
-                </div>
-            </section>
-        `;
+            <div class="toolbar__actions">
+                <button class="btn add-course-button" 
+                    type="button" 
+                    data-modal-open="card-modal" 
+                    data-modal-mode="create">
+                    + Crear nuevo curso
+                </button>
+            </div>
+        </section>`;
         
         const referenceElement = document.querySelector('.objects-card-grid');
         bodyElement.insertBefore(addCourseButton, referenceElement);
@@ -143,3 +144,16 @@ async function handleCourseForm(e) {
     document.getElementById('modal-course').classList.remove('is-open');
     coursesButtonClicked();
 };
+
+function deleteCourse(e) {
+    e.preventDefault();
+
+    const pressedBtn = e.currentTarget;
+    const courseIdToBeDeleted = pressedBtn.dataset.id;
+
+    fetch(`http://localhost:5000/api/delete-course/${courseIdToBeDeleted}`,{
+            method: "DELETE"
+        }
+    )
+    .then(() => coursesButtonClicked());
+}
